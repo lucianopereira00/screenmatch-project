@@ -7,8 +7,10 @@ import br.com.alura.screenmatch.service.ConsumoApi;
 import br.com.alura.screenmatch.service.ConverteDados;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
         private final String URL = "https://www.omdbapi.com/?t=";
@@ -34,14 +36,19 @@ public class Main {
             }
             temporadaList.forEach(System.out::println);
 
+            temporadaList.forEach(t ->
+                    t.episodios().forEach(e ->
+                            System.out.println(e.titulo())) );
 
-//            for(int i = 0; i < dados.temporadas(); i++){
-//                List<DadosEpisodio>  episodioList = temporadaList.get(i).episodios();
-//                for(int j  = 0; j < episodioList.size(); j++){
-//                    System.out.println(episodioList.get(j).titulo());
-//                }
-//            }
+            List<DadosEpisodio> dadosEpisodio = temporadaList.stream()
+                    .flatMap(t -> t.episodios().stream())
+                    .collect(Collectors.toList());
 
-            temporadaList.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())) );
+            System.out.println("\nO top 5 melhores avaliados!");
+            dadosEpisodio.stream()
+                    .filter(e -> !e.avaliacaoEp().equalsIgnoreCase("N/A"))
+                    .sorted(Comparator.comparing(DadosEpisodio::avaliacaoEp).reversed())
+                    .limit(5)
+                    .forEach(System.out::println);
         }
 }
