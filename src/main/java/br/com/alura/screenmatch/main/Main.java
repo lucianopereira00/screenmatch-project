@@ -52,7 +52,7 @@ public class Main {
                     .limit(5)
                     .forEach(System.out::println);
 
-            List<Episodio> episodios = temporadaList.stream()
+            List<Episodio> episodiosObj = temporadaList.stream()
                     .flatMap(t -> t.episodios().stream()
                             .map(d -> new Episodio(t.numeroTemporas(), d))
                     ).collect(Collectors.toList());
