@@ -3,6 +3,7 @@ package br.com.alura.screenmatch.main;
 import br.com.alura.screenmatch.Model.DadosEpisodio;
 import br.com.alura.screenmatch.Model.DadosSerie;
 import br.com.alura.screenmatch.Model.DadosTemporada;
+import br.com.alura.screenmatch.Model.Episodio;
 import br.com.alura.screenmatch.service.ConsumoApi;
 import br.com.alura.screenmatch.service.ConverteDados;
 
@@ -50,5 +51,12 @@ public class Main {
                     .sorted(Comparator.comparing(DadosEpisodio::avaliacaoEp).reversed())
                     .limit(5)
                     .forEach(System.out::println);
+
+            List<Episodio> episodios = temporadaList.stream()
+                    .flatMap(t -> t.episodios().stream()
+                            .map(d -> new Episodio(t.numeroTemporas(), d))
+                    ).collect(Collectors.toList());
+
+
         }
 }
