@@ -81,10 +81,18 @@ public class Main {
                             e.getDataLancamento().isAfter(dataDeBusca))
                     .forEach(e -> System.out.println(
                             "Temporada = " + e.getTemporada()+
-                                "Episodio = " + e.getTitulo()+
-                                    "Data de lancamento = " + e.getDataLancamento()
+                                " || Episodio = " + e.getTitulo()+
+                                    " || Data de lancamento = " + e.getDataLancamento()
                                         .format(formatter)
 
                     ));
+
+            Map<Integer, Double> avaliacaoPorTemporada = episodios.stream()
+                    .filter(e -> e.getAvaliacao() > 0.0)
+                    .collect(Collectors.groupingBy(Episodio::getTemporada,
+                            Collectors.averagingDouble(Episodio::getAvaliacao)));
+            System.out.println(avaliacaoPorTemporada);
+
+
         }
 }
