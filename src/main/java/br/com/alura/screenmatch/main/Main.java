@@ -57,7 +57,7 @@ public class Main {
                     ).collect(Collectors.toList());
             episodios.forEach(System.out::println);
 
-            System.out.println("Digite o nome de uma serie para assistir:");
+            System.out.println("Digite o nome de um espisódio para assistir:");
             var nomeTitulo = scanner.nextLine();
             Optional<Episodio> episodioBuscado = episodios.stream()
                     .filter(e -> e.getTitulo().toUpperCase().contains(nomeTitulo.toUpperCase()))
@@ -93,6 +93,13 @@ public class Main {
                             Collectors.averagingDouble(Episodio::getAvaliacao)));
             System.out.println(avaliacaoPorTemporada);
 
+            DoubleSummaryStatistics est = episodios.stream()
+                    .filter(e -> e.getAvaliacao()>0.0)
+                    .collect(Collectors.summarizingDouble(Episodio::getAvaliacao));
+            System.out.println("Média: "+ est.getAverage());
+            System.out.println("Melhor episódio:"+ est.getMax());
+            System.out.println("Pior espisódio: "+ est.getMin());
+            System.out.println("Quantidade de episódios: "+ est.getCount());
 
         }
 }
